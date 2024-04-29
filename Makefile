@@ -22,7 +22,13 @@ GNL_FILE	=	gnl.a
 
 GNL_LIB	=	$(addprefix $(GNL_PATH), $(GNL_FILE))
 
-C_FILE		=
+MLX_PATH	=	./libraries/mlx/
+
+MLX_FILE	=	libmlx.a
+
+MLX_LIB		=	$(addprefix $(MLX_PATH), $(MLX_FILE))
+
+C_FILE		=	main.c
 
 SRC_DIR		=	./src/
 
@@ -52,10 +58,15 @@ printf:
 	@make -C $(PRINTF_PATH)
 	@echo "\033[1;32mPRINTF_lib created\n"
 
-$(NAME): lib gnl printf $(OBJ)
-	@echo "\033[0;33m\nCOMPILING minishell...\n"
-	$(CC) $(OBJ) $(LIBFT_LIB) $(GNL_LIB) $(PRINTF_LIB) -lreadline -o $(NAME)
-	@echo "\033[1;32m./minishell created\n"
+mlx:
+	@echo "\033[0;33m\nCOMPILING $(MLX_PATH)\n"
+	@make -C $(MLX_PATH)
+	@echo "\033[1;32mMLX_lib created\n"
+
+$(NAME): lib gnl printf mlx $(OBJ)
+	@echo "\033[0;33m\nCOMPILING cub3d...\n"
+	$(CC) $(OBJ) $(LIBFT_LIB) $(GNL_LIB) $(PRINTF_LIB) ${MLX_LIB} -lXext -lX11 -o $(NAME)
+	@echo "\033[1;32m./cub3d created\n"
 
 clean:
 	@echo "\033[0;31mDeleting Obj file in $(LIBFT_PATH)...\n"
@@ -64,13 +75,15 @@ clean:
 	@make clean -sC $(GNL_PATH)
 	@echo "\033[0;31mDeleting Obj file in $(PRINTF_PATH)...\n"
 	@make clean -sC $(PRINTF_PATH)
+	@echo "\033[0;31mDeleting Obj file in $(MLX_PATH)...\n"
+	@make clean -sC $(MLX_PATH)
 	@echo "\033[1;32mDone\n"
-	@echo "\033[0;31mDeleting minishell object...\n"
+	@echo "\033[0;31mDeleting cub3d object...\n"
 	@rm -f $(OBJ)
 	@echo "\033[1;32mDone\n"
 
 fclean: clean
-	@echo "\033[0;31mDeleting minishell executable..."
+	@echo "\033[0;31mDeleting cub3d executable..."
 	@rm -f $(NAME)
 	@make fclean -C $(LIBFT_PATH)
 	@make fclean -C $(GNL_PATH)
