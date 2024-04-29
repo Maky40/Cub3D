@@ -5,40 +5,29 @@ CC			=	cc
 FLAG		=	-Wall -Wextra -Werror -g
 
 LIBFT_PATH	=	./libraries/libft/
-
 LIBFT_FILE	=	libft.a
-
 LIBFT_LIB	=	$(addprefix $(LIBFT_PATH), $(LIBFT_FILE))
 
 PRINTF_PATH	=	./libraries/ft_printf/
-
 PRINTF_FILE	=	printf.a
-
 PRINTF_LIB	=	$(addprefix $(PRINTF_PATH), $(PRINTF_FILE))
 
 GNL_PATH	=	./libraries/gnl/
-
 GNL_FILE	=	gnl.a
-
-GNL_LIB	=	$(addprefix $(GNL_PATH), $(GNL_FILE))
+GNL_LIB		=	$(addprefix $(GNL_PATH), $(GNL_FILE))
 
 MLX_PATH	=	./libraries/mlx/
-
 MLX_FILE	=	libmlx.a
-
 MLX_LIB		=	$(addprefix $(MLX_PATH), $(MLX_FILE))
 
-C_FILE		=	main.c
-
 SRC_DIR		=	./src/
+OBJ_DIR		=	./obj/
 
-INC_DIR		=	./include/
+SRC			=	$(wildcard $(SRC_DIR)*.c)
+OBJ			=	$(patsubst $(SRC_DIR)%.c, $(OBJ_DIR)%.o, $(SRC))
 
-SRC			=	$(addprefix $(SRC_DIR),$(C_FILE))
-
-OBJ			=	$(SRC:.c=.o)
-
-.c.o:
+$(OBJ_DIR)%.o: $(SRC_DIR)%.c
+	@mkdir -p $(@D)
 	$(CC) $(FLAG) -c $< -o $@
 
 all: $(NAME)
@@ -79,7 +68,7 @@ clean:
 	@make clean -sC $(MLX_PATH)
 	@echo "\033[1;32mDone\n"
 	@echo "\033[0;31mDeleting cub3d object...\n"
-	@rm -f $(OBJ)
+	@rm -rf $(OBJ_DIR)
 	@echo "\033[1;32mDone\n"
 
 fclean: clean
