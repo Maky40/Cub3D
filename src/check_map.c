@@ -1,5 +1,6 @@
 #include "../include/cub3d.h"
 
+// verify if the side characters (crosses) and the characters in the corners of the square are correct (check_cross_angle)
 void	check_cross_angle(char **cpy_map, int i, int j, t_data *data)
 {
 	if (cpy_map[i - 1][j] == ' ' || cpy_map[i + 1][j] == ' ')
@@ -20,6 +21,7 @@ void	check_cross_angle(char **cpy_map, int i, int j, t_data *data)
 		data -> valid_map = 0;
 }
 
+// verify if the character is surrounded by other characters with a squared shape around it
 int	check_in_map(char **map, int i, int j)
 {
 	int	height;
@@ -34,6 +36,9 @@ int	check_in_map(char **map, int i, int j)
 	return (0);
 }
 
+// verify if the char is '0' (for the recursivity)
+// verify if the character is surrounded by other characters with a squared shape around it (check_in_map)
+// verify if the side characters (crosses) and the characters in the corners of the square are correct (check_cross_angle)
 void	is_closed(char **cpy_map, int i, int j, t_data *data)
 {
 	if (cpy_map != '0')
@@ -51,6 +56,7 @@ void	is_closed(char **cpy_map, int i, int j, t_data *data)
 	is_closed(cpy_map, i, j + 1, data);
 }
 
+// Duplicate the map, when find a '0' call the function is_closed
 void	check_map_closed(t_data *data)
 {
 	char	**cpy_map;
@@ -78,7 +84,9 @@ void	check_map_closed(t_data *data)
 	free_duplicate_map(cpy_map);
 	return ;
 }
-
+// The while loop check if we have only available characters (check_char function).
+// Call the check_map function to find out whether map is closed or not.
+// If the map is closed data -> valid = 0 else data -> valid = 1.
 int	check_map(t_data *data)
 {
 	int	i;
@@ -92,7 +100,7 @@ int	check_map(t_data *data)
 		{
 			if (data -> map[i][j] == ' ')
 				j++;
-			if (check_carac(data -> map[i][j]) == 1)
+			if (check_char(data -> map[i][j]) == 1)
 				return (error_map(data));
 			j++;
 		}

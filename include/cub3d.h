@@ -16,7 +16,7 @@ typedef struct data_s
 // check map
 int		check_map(t_data *data);
 char	**duplicate_map(char **map1);
-int		check_carac(char c);
+int		check_char(char c);
 int		error_map(t_data *data);
 void	free_map_duplicate(char **map);
 
