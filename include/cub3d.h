@@ -11,6 +11,7 @@ typedef struct data_s
 {
 	char	**map;
 	int		valid_map;
+	char	**texture_color;
 }				t_data;
 
 // check map

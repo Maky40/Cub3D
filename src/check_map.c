@@ -41,7 +41,7 @@ int	check_in_map(char **map, int i, int j)
 // verify if the side characters (crosses) and the characters in the corners of the square are correct (check_cross_angle)
 void	is_closed(char **cpy_map, int i, int j, t_data *data)
 {
-	if (cpy_map != '0')
+	if (cpy_map[i][j] != '0')
 		return ;
 	if (check_in_map(cpy_map, i, j) == 1)
 	{
