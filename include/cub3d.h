@@ -14,6 +14,8 @@ typedef struct data_s
 	int		valid_texture_color;
 	int		count_letter;
 	char	**texture_color;
+	int		color_cap;
+	int		color_floor;
 }				t_data;
 
 // check map
@@ -27,4 +29,6 @@ void	free_tab_tab(char **tab);
 // errors
 void		error_map(char *str, t_data *data);
 void	ft_error_texture(char **str, t_data *data, char **tab);
+// init texture and color
+void	init_texture_color(t_data *data)
 #endif

@@ -74,7 +74,7 @@ void	parse_data(t_data *data, int fd)
 	data -> texture_color = ft_split(tab_line[0], '\n');
 	if (i != 6)
 		return (ft_error_texture("Error\nNo all texture or color", data, tab_line));
-	// init_texture(data -> texture_color); create verif and initialisation texture (verifier si toutes les textures sont bonnes. si pas bon set data -> valid color a 0 sinon a 1)
+	init_texture(data);
 	if (data -> valid_texture_color == 0)
 		return (ft_error_texture("Error\nTexture or color false", data, tab_line));
 	data -> map = ft_split(get_map(tab_line, fd, data), '\n');
