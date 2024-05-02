@@ -74,14 +74,14 @@ void	check_map_closed(t_data *data)
 				is_closed(cpy_map, i, j, data);
 			if (data -> valid_map == 0)
 			{
-				free_duplicate_map(cpy_map);
+				free_tab_tab(cpy_map);
 				return ;
 			}
 			j++;
 		}
 		i++;
 	}
-	free_duplicate_map(cpy_map);
+	free_tab_tab(cpy_map);
 	return ;
 }
 // The while loop check if we have only available characters (check_char function).
@@ -100,8 +100,8 @@ int	check_map(t_data *data)
 		{
 			if (data -> map[i][j] == ' ')
 				j++;
-			if (check_char(data -> map[i][j]) == 1)
-				return (error_map(data));
+			if (check_char(data -> map[i][j]) == 1 || data -> count_letter != 1)
+				return (0);
 			j++;
 		}
 		i++;
@@ -109,5 +109,6 @@ int	check_map(t_data *data)
 	data -> valid_map = 1;
 	check_map_closed(data);
 	if (data -> valid_map == 0)
-		return (error_map(data));
+		return (0);
+	return (1);
 }
