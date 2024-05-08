@@ -7,6 +7,7 @@ void	free_tab_tab(char **tab)
 	i = 0;
 	while (tab[i])
 	{
+		ft_printf("%d\n", i);
 		free(tab[i]);
 		i++;
 	}
@@ -26,7 +27,7 @@ void	free_data_map(t_data *data)
 void	free_data_texture_color(t_data *data)
 {
 	free_tab_tab(data -> texture_color);
-	free(data -> texture_color);
+	// free(data -> texture_color);
 	data -> texture_color = NULL;
 	return ;
 }

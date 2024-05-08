@@ -29,9 +29,9 @@ int	check_in_map(char **map, int i, int j)
 	height = 0;
 	while (map[height])
 		height++;
-	if (j == 0 || j == ft_strlen(map[i]) - 1 || i == 0 || i == height - 1)
+	if (j == 0 || j == (int)ft_strlen(map[i]) - 1 || i == 0 || i == height - 1)
 		return (1);
-	if (j + 1 > ft_strlen(map[i - 1]) - 1 ||  j + 1 > ft_strlen(map[i + 1]) - 1)
+	if (j + 1 > (int)ft_strlen(map[i - 1]) - 1 ||  j + 1 > (int)ft_strlen(map[i + 1]) - 1)
 		return (1);
 	return (0);
 }
@@ -48,7 +48,7 @@ void	is_closed(char **cpy_map, int i, int j, t_data *data)
 		data -> valid_map = 0;
 		return ;
 	}
-	cpy_map[i][j] == '1';
+	cpy_map[i][j] = '1';
 	check_cross_angle(cpy_map, i, j, data);
 	is_closed(cpy_map, i - 1, j, data);
 	is_closed(cpy_map, i + 1, j, data);
@@ -100,7 +100,7 @@ int	check_map(t_data *data)
 		{
 			if (data -> map[i][j] == ' ')
 				j++;
-			if (check_char(data -> map[i][j]) == 1 || data -> count_letter != 1)
+			if (check_char(data -> map[i][j], data) == 1 || data -> count_letter != 1)
 				return (0);
 			j++;
 		}

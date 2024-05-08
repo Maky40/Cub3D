@@ -21,14 +21,17 @@ typedef struct data_s
 // check map
 int		check_map(t_data *data);
 char	**duplicate_map(char **map1);
-int		check_char(char c);
+int		check_char(char c, t_data *data);
 // free
 void	free_data_map(t_data *data);
 void	free_data_texture_color(t_data *data);
 void	free_tab_tab(char **tab);
 // errors
 void		error_map(char *str, t_data *data);
-void	ft_error_texture(char **str, t_data *data, char **tab);
+void		ft_error_texture(char *str, t_data *data, char **tab);
+void		error_color(char *str, t_data *data);
 // init texture and color
-void	init_texture_color(t_data *data)
+void	init_texture_color(t_data *data);
+
+int		init_data(char **str, t_data *data);
 #endif
