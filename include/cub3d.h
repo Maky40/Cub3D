@@ -5,7 +5,62 @@
 # include "../libraries/libft/include/libft.h"
 # include "../libraries/gnl/include/get_next_line.h"
 # include "../libraries/ft_printf/include/ft_printf.h"
+# include "math.h"
 # define CARAC_MAP "10NSWE"
+# define HEIGHT 720
+# define WIDTH 1280
+# define LEFT_ARROW 65361
+# define RIGHT_ARROW 65363
+# define UP 119
+# define DOWN 115
+# define LEFT 97
+# define RIGHT 100
+# define ESC 65307
+# define ROT_SPEED 0.10
+# define TWO_PI 6.283185
+# define PI_3_2 4.712389
+# define M_PI_2	1.57079632679489661923
+
+
+typedef struct s_point
+{
+	int	x;
+	int	y;
+}	t_point;
+
+typedef struct s_player
+{
+	t_point	map_pos;
+	double	dir;
+	double	speed;
+}	t_player;
+
+
+typedef struct s_img
+{
+	void	*img;
+	char	*addr;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
+}	t_img;
+
+typedef struct s_map
+{
+	void		*mlx;
+	void		*mlx_win;
+	t_img		mlx_img;
+	t_img		*no_texture;
+	t_img		*so_texture;
+	t_img		*we_texture;
+	t_img		*ea_texture;
+	int			floor_color;
+	int			ceiling_color;
+	int			map_width;
+	int			map_height;
+	char		**map;
+	t_player	player;
+}	t_map;
 
 typedef struct data_s
 {
