@@ -20,6 +20,7 @@
 # define TWO_PI 6.283185
 # define PI_3_2 4.712389
 # define M_PI_2	1.57079632679489661923
+# define CUBE_SIZE 64
 
 
 typedef struct s_point

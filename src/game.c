@@ -34,9 +34,9 @@ int	key_hook(int keycode, t_map *map)
 		//raycasting(map);
 	}
 	else if (keycode == UP)
-		move_forward(map);
+		move_up(map);
 	else if (keycode == DOWN)
-		move_backward(map);
+		move_down(map);
 	else if (keycode == LEFT)
 		move_left(map);
 	else if (keycode == RIGHT)
