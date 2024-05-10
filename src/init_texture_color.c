@@ -20,6 +20,7 @@ int		set_color2(char **rgb)
 	r = ft_atoi(rgb[0]);
 	g = ft_atoi(rgb[1]);
 	b = ft_atoi(rgb[2]);
+	free_tab_tab(rgb);
 	if (check_colors(r, g, b))
 	{
 		color = r;
@@ -53,11 +54,11 @@ int		set_color(char **tab, char c)
 	return (set_color2(rgb));
 }
 
-void	init_texture_color(t_data *data)
+void	init_texture_color(t_data *data, int fd)
 {
 	data -> color_cap = set_color(data -> texture_color, 'C');
 	data -> color_floor = set_color(data -> texture_color, 'F');
 	if (data -> color_cap == -1 || data -> color_floor == -1)
-		return (error_color("Error\nColor Invalid", data));
+		return (error_color("Error\nColor Invalid", data, fd));
 	// init_texture(data);
 }

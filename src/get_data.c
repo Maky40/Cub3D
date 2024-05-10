@@ -1,10 +1,11 @@
 #include "../include/cub3d.h"
 
-char	*get_map(char **tab_line, int fd, t_data *data)
+char	**get_map(char **tab_line, int fd, t_data *data)
 {
 	char	*line;
 	char	*all_line;
 	int		i;
+	char	**map;
 
 	all_line = ft_strdup(tab_line[1]);
 	line = get_next_line(fd);
@@ -20,8 +21,11 @@ char	*get_map(char **tab_line, int fd, t_data *data)
 	{
 		if (all_line[i] == '\n' && all_line[i + 1] == '\n')
 			data -> valid_map = 0;
+		i++;
 	}
-	return (all_line);
+	map = ft_split(all_line, '\n');
+	free(all_line);
+	return (map);
 }
 
 char	**return_tab_line(char *all_line, char *line)
@@ -79,7 +83,6 @@ void	parse_data(t_data *data, int fd)
 	char	**tab_line;
 
 	i = 0;
-	data -> valid_texture_color = 1;
 	tab_line = get_texture_color(fd);
 	if (!tab_line)
 	{
@@ -88,16 +91,17 @@ void	parse_data(t_data *data, int fd)
 		return ;
 	}
 	data -> texture_color = ft_split(tab_line[0], '\n');
+	while (data -> texture_color[i])
+		i++;
 	if (i != 6)
-		return (ft_error_texture("Error\nNo all texture or color", data, tab_line));
-	init_texture_color(data);
+		return (ft_error_texture("Error\nNo all texture or color", data, tab_line, fd));
+	init_texture_color(data, fd);
 	if (data -> valid_texture_color == 0)
 	{
 		free_tab_tab(tab_line);
 		return ;
 	}
-	data -> map = ft_split(get_map(tab_line, fd, data), '\n');
-	free_tab_tab(tab_line);
+	data -> map = get_map(tab_line, fd, data);
 	if (data -> valid_map == 0 || check_map(data) == 0)
 		error_map("Error\nMap not closed or invalid char", data);
 }
@@ -106,6 +110,8 @@ int	init_data(char **str, t_data *data)
 {
 	int	fd;
 
+	data -> valid_texture_color = 1;
+	data -> valid_map = 1;
 	fd = 0;
 	data -> count_letter = 0;
 	if (ft_strchr(str[1], ".cub") == 0)

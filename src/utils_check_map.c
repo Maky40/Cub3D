@@ -36,9 +36,11 @@ int	check_char(char c, t_data *data)
 	while (CARAC_MAP[i])
 	{
 		if (CARAC_MAP[i] == c)
+		{
+			if (ft_isalpha(c) == 1)
+				data -> count_letter += 1;
 			return (0);
-		if (ft_isalpha(c) == 1)
-			data -> count_letter += 1;
+		}
 		i++;
 	}
 	return (1);
