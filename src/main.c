@@ -8,9 +8,9 @@ void	get_dir(t_map *map)
 	i = map -> player -> map_pos.y;
 	j = map -> player -> map_pos.x;
 	if (map -> map[i][j] == 'N')
-		map -> player -> dir = (3 * M_PI) / 2;
+		map -> player -> dir = PI_3_2;
 	if (map -> map[i][j] == 'S')
-		map -> player -> dir = M_PI / 2;
+		map -> player -> dir = M_PI_2;
 	if (map -> map[i][j] == 'W')
 		map -> player -> dir = M_PI;
 	if (map -> map[i][j] == 'E')
