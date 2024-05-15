@@ -5,7 +5,7 @@
 # include "../libraries/libft/include/libft.h"
 # include "../libraries/gnl/include/get_next_line.h"
 # include "../libraries/ft_printf/include/ft_printf.h"
-# include "math.h"
+# include <math.h>
 # define CARAC_MAP "10NSWE"
 # define HEIGHT 720
 # define WIDTH 1280
@@ -20,7 +20,9 @@
 # define TWO_PI 6.283185
 # define PI_3_2 4.712389
 # define M_PI_2	1.57079632679489661923
+# define M_PI 3.1415926535897932384626433832795028841
 # define CUBE_SIZE 64
+# define FOV 60
 
 
 typedef struct s_point
@@ -34,6 +36,12 @@ typedef struct s_player
 	t_point	map_pos;
 	double	dir;
 	double	speed;
+	int		plyr_x;
+	int		plyr_y;
+	float	fov_rd;
+	// int		rot;
+	// int		l_r;
+	// int		u_d;
 }	t_player;
 
 
@@ -60,10 +68,11 @@ typedef struct s_map
 	int			map_width;
 	int			map_height;
 	char		**map;
-	t_player	player;
+	t_player	*player;
+	t_ray		*ray;
 }	t_map;
 
-typedef struct data_s
+typedef struct s_data
 {
 	char	**map;
 	int		valid_map;
@@ -73,6 +82,13 @@ typedef struct data_s
 	int		color_cap;
 	int		color_floor;
 }				t_data;
+
+typedef struct s_ray
+{
+	double	ray_ngl;
+	double	distance;
+	int		flag;
+}				t_ray;
 
 // check map
 int		check_map(t_data *data);
@@ -84,10 +100,13 @@ void	free_data_texture_color(t_data *data);
 void	free_tab_tab(char **tab);
 // errors
 void		error_map(char *str, t_data *data);
-void		ft_error_texture(char *str, t_data *data, char **tab);
-void		error_color(char *str, t_data *data);
-// init texture and color
-void	init_texture_color(t_data *data);
-
+void		ft_error_texture(char *str, t_data *data, char **tab, int fd);
+void		error_color(char *str, t_data *data, int fd);
+// init texture and color and data
+void	init_texture_color(t_data *data, int fd);
 int		init_data(char **str, t_data *data);
+// raycasting
+void	raycasting(t_map *map);
+float	get_h_inter(t_map *map, float angl);
+float	get_v_inter(t_map *map, float angl);
 #endif

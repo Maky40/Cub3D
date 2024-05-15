@@ -22,15 +22,15 @@ int	key_hook(int keycode, t_map *map)
 	if (keycode == LEFT_ARROW)
 	{
 		mlx_destroy_image(map->mlx, map->mlx_img.img);
-		map->player.dir -= ROT_SPEED;
-		map->player.dir = angle_rad_conversion(map->player.dir);
+		map->player->dir -= ROT_SPEED;
+		map->player->dir = angle_rad_conversion(map->player->dir);
 		//raycasting(map);
 	}
 	else if (keycode == RIGHT_ARROW)
 	{
 		mlx_destroy_image(map->mlx, map->mlx_img.img);
-		map->player.dir += ROT_SPEED;
-		map->player.dir = angle_rad_conversion(map->player.dir);
+		map->player->dir += ROT_SPEED;
+		map->player->dir = angle_rad_conversion(map->player->dir);
 		//raycasting(map);
 	}
 	else if (keycode == UP)
