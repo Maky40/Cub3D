@@ -24,14 +24,14 @@ int	key_hook(int keycode, t_map *map)
 		mlx_destroy_image(map->mlx, map->mlx_img.img);
 		map->player->dir -= ROT_SPEED;
 		map->player->dir = angle_rad_conversion(map->player->dir);
-		//raycasting(map);
+		raycasting(map);
 	}
 	else if (keycode == RIGHT_ARROW)
 	{
 		mlx_destroy_image(map->mlx, map->mlx_img.img);
 		map->player->dir += ROT_SPEED;
 		map->player->dir = angle_rad_conversion(map->player->dir);
-		//raycasting(map);
+		raycasting(map);
 	}
 	else if (keycode == UP)
 		move_up(map);
@@ -52,6 +52,6 @@ void	game(t_map *map)
 	mlx_do_key_autorepeaton(map->mlx);
 	mlx_hook(map->mlx_win, 2, 1L << 0, key_hook, map);
 	mlx_hook(map->mlx_win, 17, (1L << 2), free_map_struct, map);
-	//raycasting(map);
+	raycasting(map);
 	mlx_loop(map->mlx);
 }

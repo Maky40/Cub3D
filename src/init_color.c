@@ -54,11 +54,10 @@ int		set_color(char **tab, char c)
 	return (set_color2(rgb));
 }
 
-void	init_texture_color(t_data *data, int fd)
+void	init_color(t_data *data, int fd)
 {
 	data -> color_cap = set_color(data -> texture_color, 'C');
 	data -> color_floor = set_color(data -> texture_color, 'F');
 	if (data -> color_cap == -1 || data -> color_floor == -1)
 		return (error_color("Error\nColor Invalid", data, fd));
-	// init_texture(data);
 }

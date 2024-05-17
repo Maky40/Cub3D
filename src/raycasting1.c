@@ -80,4 +80,5 @@ void raycasting(t_map *map) // cast the rays
 		ray++; // next ray
 		map->ray->ray_ngl += (map->player->fov_rd / WIDTH); // next angle
 	}
+	mlx_put_image_to_window(map -> mlx, map -> mlx_win, map -> mlx_img, WIDTH, HEIGHT);
 }

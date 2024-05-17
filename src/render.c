@@ -1,6 +1,6 @@
 #include "../include/cub3d.h"
 
-void	my_mlx_pixel_put(t_map *map, int x, int y, int color)
+void	ft_mlx_pixel_put(t_map *map, int x, int y, int color)
 {
 	if (x < 0 || x >= WIDTH)
 		return ;
@@ -24,38 +24,95 @@ void	draw_floor_ceiling(t_map *map, int ray, int t_pix, int b_pix)
 
 	i = b_pix;
 	while (i < HEIGHT)
-		my_mlx_pixel_put(map, ray, i++, 0xB99470FF);
+		ft_mlx_pixel_put(map, ray, i++, map -> ceiling_color);
 	i = 0;
 	while (i < t_pix)
-		my_mlx_pixel_put(map, ray, i++, 0x89CFF3FF);
+		ft_mlx_pixel_put(map, ray, i++, map -> floor_color);
 }
 
-int	get_color(t_map *map, int flag)
+// int	get_color(t_map *map, int flag)
+// {
+// 	map->ray->ray_ngl = nor_angle(map->ray->ray_ngl);
+// 	if (flag == 0)
+// 	{
+// 		if (map->ray->ray_ngl > M_PI / 2 && map->ray->ray_ngl < 3 * (M_PI / 2))
+// 			return (0xB5B5B5FF);
+// 		else
+// 			return (0xB5B5B5FF);
+// 	}
+// 	else
+// 	{
+// 		if (map->ray->ray_ngl > 0 && map->ray->ray_ngl < M_PI)
+// 			return (0xF5F5F5FF);
+// 		else
+// 			return (0xF5F5F5FF);
+// 	}
+// }
+
+// void	draw_wall(t_map *map, int ray, int t_pix, int b_pix)
+// {
+// 	int	color;
+
+// 	color = get_color(map, map->ray->flag);
+// 	while (t_pix < b_pix)
+// 		ft_mlx_pixel_put(map, ray, t_pix++, color);
+// }
+
+
+
+int get_texture_color(t_img *texture, int x, int y)
 {
-	map->ray->ray_ngl = nor_angle(map->ray->ray_ngl);
-	if (flag == 0)
-	{
-		if (map->ray->ray_ngl > M_PI / 2 && map->ray->ray_ngl < 3 * (M_PI / 2))
-			return (0xB5B5B5FF);
-		else
-			return (0xB5B5B5FF);
-	}
-	else
-	{
-		if (map->ray->ray_ngl > 0 && map->ray->ray_ngl < M_PI)
-			return (0xF5F5F5FF);
-		else
-			return (0xF5F5F5FF);
-	}
+    char *dst;
+
+    if (x < 0 || x >= 64 || y < 0 || y >= 64)
+        return (0x000000); // Return black if coordinates are out of bounds
+    dst = texture->addr + (y * texture->line_length + x * (texture->bits_per_pixel / 8));
+    return *(unsigned int *)dst;
 }
 
-void	draw_wall(t_map *map, int ray, int t_pix, int b_pix)
+void draw_wall(t_map *map, int ray, int t_pix, int b_pix)
 {
-	int	color;
+    t_img *texture;
+    int color;
+    int tex_x;
+    int tex_y;
+    double wall_x;
+    double wall_h = b_pix - t_pix;
 
-	color = get_color(map, map->ray->flag);
-	while (t_pix < b_pix)
-		my_mlx_pixel_put(map, ray, t_pix++, color);
+    // Determine which texture to use based on the wall hit flag and ray angle
+    if (map->ray->flag == 0)
+    {
+        if (map->ray->ray_ngl > M_PI / 2 && map->ray->ray_ngl < 3 * M_PI / 2)
+            texture = map->we_texture;
+        else
+            texture = map->ea_texture;
+    }
+    else
+    {
+        if (map->ray->ray_ngl > 0 && map->ray->ray_ngl < M_PI)
+            texture = map->so_texture;
+        else
+            texture = map->no_texture;
+    }
+
+    // Calculate the x coordinate on the texture
+    if (map->ray->flag == 0)
+        wall_x = map->player->plyr_y + map->ray->distance * sin(map->ray->ray_ngl);
+    else
+        wall_x = map->player->plyr_x + map->ray->distance * cos(map->ray->ray_ngl);
+    wall_x -= floor(wall_x);
+    tex_x = (int)(wall_x * 64);
+    if ((map->ray->flag == 0 && map->ray->ray_ngl > M_PI / 2 && map->ray->ray_ngl < 3 * M_PI / 2) || 
+        (map->ray->flag == 1 && map->ray->ray_ngl > 0 && map->ray->ray_ngl < M_PI))
+        tex_x = 64 - tex_x - 1;
+
+    // Draw the wall with the texture
+    while (t_pix < b_pix)
+    {
+        tex_y = (int)(((t_pix - HEIGHT / 2 + wall_h / 2) * 64) / wall_h);
+        color = get_texture_color(texture, tex_x, tex_y);
+        ft_mlx_pixel_put(map, ray, t_pix++, color);
+    }
 }
 
 void	render_wall(t_map *map, int ray)

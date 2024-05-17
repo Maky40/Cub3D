@@ -20,10 +20,16 @@
 # define TWO_PI 6.283185
 # define PI_3_2 4.712389
 # define M_PI_2	1.57079632679489661923
-# define M_PI 3.1415926535897932384626433832795028841
+// # define M_PI 3.1415926535897932384626433832795028841
 # define CUBE_SIZE 64
 # define FOV 60
 
+typedef struct s_ray
+{
+	double	ray_ngl;
+	double	distance;
+	int		flag;
+}				t_ray;
 
 typedef struct s_point
 {
@@ -83,13 +89,6 @@ typedef struct s_data
 	int		color_floor;
 }				t_data;
 
-typedef struct s_ray
-{
-	double	ray_ngl;
-	double	distance;
-	int		flag;
-}				t_ray;
-
 // check map
 int		check_map(t_data *data);
 char	**duplicate_map(char **map1);
@@ -98,12 +97,13 @@ int		check_char(char c, t_data *data);
 void	free_data_map(t_data *data);
 void	free_data_texture_color(t_data *data);
 void	free_tab_tab(char **tab);
+void	free_gnl(int fd);
 // errors
 void		error_map(char *str, t_data *data);
-void		ft_error_texture(char *str, t_data *data, char **tab, int fd);
+void		ft_error_texture(char *str, t_data *data, t_map *map, int i);
 void		error_color(char *str, t_data *data, int fd);
 // init texture and color and data
-void	init_texture_color(t_data *data, int fd);
+void	init_color(t_data *data, int fd);
 int		init_data(char **str, t_data *data);
 // raycasting
 void	raycasting(t_map *map);

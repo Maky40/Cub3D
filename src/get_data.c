@@ -95,7 +95,7 @@ void	parse_data(t_data *data, int fd)
 		i++;
 	if (i != 6)
 		return (ft_error_texture("Error\nNo all texture or color", data, tab_line, fd));
-	init_texture_color(data, fd);
+	init_color(data, fd);
 	if (data -> valid_texture_color == 0)
 	{
 		free_tab_tab(tab_line);

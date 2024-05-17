@@ -73,7 +73,6 @@ void	init_map(t_map *map, t_data *data)
 	get_width_height(map);
 	get_pos_player(map);
 	get_dir(map);
-	free(data);
 }
 
 int main(int argc, char **argv)
@@ -91,6 +90,7 @@ int main(int argc, char **argv)
 			init_map(&map, data);
 			map.mlx = mlx_init();
 			map.mlx_win = mlx_new_window(map.mlx, WIDTH, HEIGHT, "cub3D");
+			init_texture(data, map);
 			game(&map);
 		}
 		else
