@@ -18,7 +18,7 @@ void	move_up(t_map *map)
 	double	new_x;
 	double	new_y;
 
-	mlx_destroy_image(map->mlx, map->mlx_img.img);
+	mlx_destroy_image(map->mlx, map->mlx_img->img);
 	new_x = map->player->map_pos.x + cos(map->player->dir) * map->player->speed;
 	new_y = map->player->map_pos.y + sin(map->player->dir) * map->player->speed;
 	if (!is_blocking(map, new_x, new_y))
@@ -34,7 +34,7 @@ void	move_down(t_map *map)
 	double	new_x;
 	double	new_y;
 
-	mlx_destroy_image(map->mlx, map->mlx_img.img);
+	mlx_destroy_image(map->mlx, map->mlx_img->img);
 	new_x = map->player->map_pos.x - cos(map->player->dir) * map->player->speed;
 	new_y = map->player->map_pos.y - sin(map->player->dir) * map->player->speed;
 	if (!is_blocking(map, new_x, new_y))
@@ -52,7 +52,7 @@ void	move_left(t_map *map)
 	double	speed;
 
 	speed = map->player->speed;
-	mlx_destroy_image(map->mlx, map->mlx_img.img);
+	mlx_destroy_image(map->mlx, map->mlx_img->img);
 	new_x = map->player->map_pos.x - cos(map->player->dir + M_PI_2) * speed;
 	new_y = map->player->map_pos.y - sin(map->player->dir + M_PI_2) * speed;
 	if (!is_blocking(map, new_x, new_y))
@@ -70,7 +70,7 @@ void	move_right(t_map *map)
 	double	speed;
 
 	speed = map->player->speed;
-	mlx_destroy_image(map->mlx, map->mlx_img.img);
+	mlx_destroy_image(map->mlx, map->mlx_img->img);
 	new_x = map->player->map_pos.x + cos(map->player->dir + M_PI_2) * speed;
 	new_y = map->player->map_pos.y + sin(map->player->dir + M_PI_2) * speed;
 	if (!is_blocking(map, new_x, new_y))

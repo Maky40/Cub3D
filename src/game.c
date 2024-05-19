@@ -9,7 +9,7 @@ double	angle_rad_conversion(double rad_angle)
 	return (rad_angle);
 }
 
-void	free_map_struct(t_map *map)
+int	free_map_struct(t_map *map)
 {
 	mlx_destroy_window(map->mlx, map->mlx_win);
 	mlx_destroy_display(map->mlx);
@@ -21,14 +21,14 @@ int	key_hook(int keycode, t_map *map)
 {
 	if (keycode == LEFT_ARROW)
 	{
-		mlx_destroy_image(map->mlx, map->mlx_img.img);
+		mlx_destroy_image(map->mlx, map->mlx_img->img);
 		map->player->dir -= ROT_SPEED;
 		map->player->dir = angle_rad_conversion(map->player->dir);
 		raycasting(map);
 	}
 	else if (keycode == RIGHT_ARROW)
 	{
-		mlx_destroy_image(map->mlx, map->mlx_img.img);
+		mlx_destroy_image(map->mlx, map->mlx_img->img);
 		map->player->dir += ROT_SPEED;
 		map->player->dir = angle_rad_conversion(map->player->dir);
 		raycasting(map);

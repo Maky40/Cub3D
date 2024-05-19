@@ -5,6 +5,7 @@
 # include "../libraries/libft/include/libft.h"
 # include "../libraries/gnl/include/get_next_line.h"
 # include "../libraries/ft_printf/include/ft_printf.h"
+# include "../libraries/mlx/mlx.h"
 # include <math.h>
 # define CARAC_MAP "10NSWE"
 # define HEIGHT 720
@@ -54,7 +55,7 @@ typedef struct s_player
 typedef struct s_img
 {
 	void	*img;
-	char	*addr;
+	int		*addr;
 	int		bits_per_pixel;
 	int		line_length;
 	int		endian;
@@ -64,7 +65,7 @@ typedef struct s_map
 {
 	void		*mlx;
 	void		*mlx_win;
-	t_img		mlx_img;
+	t_img		*mlx_img;
 	t_img		*no_texture;
 	t_img		*so_texture;
 	t_img		*we_texture;
@@ -89,6 +90,7 @@ typedef struct s_data
 	int		color_floor;
 }				t_data;
 
+void	game(t_map *map);
 // check map
 int		check_map(t_data *data);
 char	**duplicate_map(char **map1);
@@ -105,8 +107,27 @@ void		error_color(char *str, t_data *data, int fd);
 // init texture and color and data
 void	init_color(t_data *data, int fd);
 int		init_data(char **str, t_data *data);
+void    init_texture(t_data *data, t_map *map);
 // raycasting
 void	raycasting(t_map *map);
 float	get_h_inter(t_map *map, float angl);
 float	get_v_inter(t_map *map, float angl);
+int 	inter_check(float angle, float *inter, float *step, int is_horizon);
+int 	unit_circle(float angle, char c);
+int 	wall_hit(float x, float y, t_map *map);
+// render
+float	nor_angle(float angle);
+void	render_wall(t_map *map, int ray);
+// movements
+void	move_up(t_map *map);
+void	move_down(t_map *map);
+void	move_left(t_map *map);
+void	move_right(t_map *map);
+// blocking
+int	is_blocking_down(t_map *map, int new_x, int new_y);
+int	is_blocking_up(t_map *map, int new_x, int new_y);
+int	is_blocking_right(t_map *map, int new_x, int new_y);
+int	is_blocking_left(t_map *map, int new_x, int new_y);
+// main
+char	**duplicate_map2(char **map1);
 #endif

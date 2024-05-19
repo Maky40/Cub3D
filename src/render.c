@@ -6,7 +6,7 @@ void	ft_mlx_pixel_put(t_map *map, int x, int y, int color)
 		return ;
 	if (y < 0 || y >= HEIGHT)
 		return ;
-	mlx_put_pixel(map -> mlx_img, x, y, color);
+	mlx_pixel_put(map -> mlx_img, map -> mlx_win, x, y, color);
 }
 
 float	nor_angle(float angle)
@@ -60,11 +60,11 @@ void	draw_floor_ceiling(t_map *map, int ray, int t_pix, int b_pix)
 
 
 
-int get_texture_color(t_img *texture, int x, int y)
+int get_color_texture(t_img *texture, int x, int y)
 {
-    char *dst;
+    int *dst;
 
-    if (x < 0 || x >= 64 || y < 0 || y >= 64)
+    if (x < 0 || x >= CUBE_SIZE || y < 0 || y >= CUBE_SIZE)
         return (0x000000); // Return black if coordinates are out of bounds
     dst = texture->addr + (y * texture->line_length + x * (texture->bits_per_pixel / 8));
     return *(unsigned int *)dst;
@@ -101,16 +101,16 @@ void draw_wall(t_map *map, int ray, int t_pix, int b_pix)
     else
         wall_x = map->player->plyr_x + map->ray->distance * cos(map->ray->ray_ngl);
     wall_x -= floor(wall_x);
-    tex_x = (int)(wall_x * 64);
-    if ((map->ray->flag == 0 && map->ray->ray_ngl > M_PI / 2 && map->ray->ray_ngl < 3 * M_PI / 2) || 
+    tex_x = (int)(wall_x * CUBE_SIZE);
+    if ((map->ray->flag == 0 && map->ray->ray_ngl > M_PI / 2 && map->ray->ray_ngl < 3 * M_PI / 2) ||
         (map->ray->flag == 1 && map->ray->ray_ngl > 0 && map->ray->ray_ngl < M_PI))
-        tex_x = 64 - tex_x - 1;
+        tex_x = CUBE_SIZE - tex_x - 1;
 
     // Draw the wall with the texture
     while (t_pix < b_pix)
     {
-        tex_y = (int)(((t_pix - HEIGHT / 2 + wall_h / 2) * 64) / wall_h);
-        color = get_texture_color(texture, tex_x, tex_y);
+        tex_y = (int)(((t_pix - HEIGHT / 2 + wall_h / 2) * CUBE_SIZE) / wall_h);
+        color = get_color_texture(texture, tex_x, tex_y);
         ft_mlx_pixel_put(map, ray, t_pix++, color);
     }
 }

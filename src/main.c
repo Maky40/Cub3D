@@ -14,14 +14,14 @@ void	get_dir(t_map *map)
 	if (map -> map[i][j] == 'W')
 		map -> player -> dir = M_PI;
 	if (map -> map[i][j] == 'E')
-		map -> player -> dir = 0;	
+		map -> player -> dir = 0;
 }
 
 void	get_pos_player(t_map *map)
 {
 	int	i;
 	int	j;
-	
+
 	i = 0;
 	j = 0;
 	while (map -> map[i])
@@ -61,12 +61,13 @@ void	get_width_height(t_map *map)
 			k = j;
 		i++;
 	}
-	map -> map_width = k; 
+	map -> map_width = k;
 }
 
 void	init_map(t_map *map, t_data *data)
 {
-	map -> map = duplicate_map(data -> map);
+
+	map -> map = duplicate_map2(data -> map);
 	free_tab_tab(data -> map);
 	map -> floor_color = data -> color_floor;
 	map -> ceiling_color = data -> color_cap;
@@ -83,14 +84,14 @@ int main(int argc, char **argv)
 	data = malloc(sizeof(t_data));
 	if (argc != 2)
 		ft_printf("Error\nNeed only arg map.cub\n");
-	else 
+	else
 	{
 		if (init_data(argv, data) == 1)
 		{
 			init_map(&map, data);
 			map.mlx = mlx_init();
 			map.mlx_win = mlx_new_window(map.mlx, WIDTH, HEIGHT, "cub3D");
-			init_texture(data, map);
+			init_texture(data, &map);
 			game(&map);
 		}
 		else

@@ -27,6 +27,22 @@ char	**duplicate_map(char **map1)
 	}
 	return (map2);
 }
+
+char	**duplicate_map2(char **map1)
+{
+	int		i;
+	char	**map2;
+
+	i = 0;
+	while (map1[i])
+		i++;
+	map2 = malloc(sizeof(char *) * (i + 1));
+	i = -1;
+	while (map1[++i])
+		map2[i] = ft_strdup(map1[i]);
+	map2[i] = NULL;
+	return (map2);
+}
 // verify if char c is a correct character and if there is only one char
 int	check_char(char c, t_data *data)
 {

@@ -54,7 +54,7 @@ mlx:
 
 $(NAME): lib gnl printf mlx $(OBJ)
 	@echo "\033[0;33m\nCOMPILING cub3d...\n"
-	$(CC) $(OBJ) $(LIBFT_LIB) $(GNL_LIB) $(PRINTF_LIB) ${MLX_LIB} -lXext -lX11 -o $(NAME)
+	$(CC) $(OBJ) $(LIBFT_LIB) $(GNL_LIB) $(PRINTF_LIB) ${MLX_LIB} -lXext -lX11 -lm -o $(NAME)
 	@echo "\033[1;32m./cub3d created\n"
 
 clean:
