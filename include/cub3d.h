@@ -6,78 +6,78 @@
 # include "../libraries/gnl/include/get_next_line.h"
 # include "../libraries/ft_printf/include/ft_printf.h"
 # include "../libraries/mlx/mlx.h"
+# include <unistd.h>
+# include <string.h>
+# include <stdlib.h>
+# include <X11/X.h>
+# include <X11/keysym.h>
+# include <fcntl.h>
 # include <math.h>
 # define CARAC_MAP "10NSWE"
-# define HEIGHT 720
-# define WIDTH 1280
-# define LEFT_ARROW 65361
-# define RIGHT_ARROW 65363
-# define UP 119
-# define DOWN 115
-# define LEFT 97
-# define RIGHT 100
-# define ESC 65307
-# define ROT_SPEED 0.10
-# define TWO_PI 6.283185
-# define PI_3_2 4.712389
-# define M_PI_2	1.57079632679489661923
-// # define M_PI 3.1415926535897932384626433832795028841
-# define CUBE_SIZE 64
-# define FOV 60
-
-typedef struct s_ray
-{
-	double	ray_ngl;
-	double	distance;
-	int		flag;
-}				t_ray;
-
-typedef struct s_point
-{
-	int	x;
-	int	y;
-}	t_point;
-
-typedef struct s_player
-{
-	t_point	map_pos;
-	double	dir;
-	double	speed;
-	int		plyr_x;
-	int		plyr_y;
-	float	fov_rd;
-	// int		rot;
-	// int		l_r;
-	// int		u_d;
-}	t_player;
-
+# define WIDTH 1920
+# define HEIGHT 1080
+# define TEXTURE 50
 
 typedef struct s_img
 {
-	void	*img;
-	int		*addr;
-	int		bits_per_pixel;
-	int		line_length;
+	int		height;
+	int		width;
+	void	*mlx_img;
+	char	*addr;
+	int		bpp;
+	int		line_len;
 	int		endian;
 }	t_img;
 
-typedef struct s_map
+typedef struct s_moves
 {
-	void		*mlx;
-	void		*mlx_win;
-	t_img		*mlx_img;
-	t_img		*no_texture;
-	t_img		*so_texture;
-	t_img		*we_texture;
-	t_img		*ea_texture;
-	int			floor_color;
-	int			ceiling_color;
-	int			map_width;
-	int			map_height;
-	char		**map;
-	t_player	*player;
-	t_ray		*ray;
-}	t_map;
+	int		move_forward;
+	int		move_back;
+	int		step_to_left;
+	int		step_to_right;
+	int		rotate_left;
+	int		rotate_right;
+	double	move_speed;
+	double	rotate_speed;
+}	t_moves;
+
+typedef struct s_text
+{
+	int		n_text;
+	double	step;
+	int		tex_x;
+	int		tex_y;
+	double	tex_pos;
+	int		color;
+	double	wall_x;
+}				t_text;
+
+typedef struct s_ray
+{
+	double	camerax;
+	double	ray_dirx;
+	double	ray_diry;
+	double	ray_dirx0;
+	double	ray_diry0;
+	double	ray_dirx1;
+	double	ray_diry1;
+	double	side_distx;
+	double	side_disty;
+	double	delta_distx;
+	double	delta_disty;
+	double	perp_wall_dist;
+	int		mapx;
+	int		mapy;
+	double	step;
+	int		stepx;
+	int		stepy;
+	int		hit;
+	int		side;
+	int		line_height;
+	int		draw_start;
+	int		draw_end;
+	int		var_x;
+}	t_ray;
 
 typedef struct s_data
 {
@@ -88,9 +88,42 @@ typedef struct s_data
 	char	**texture_color;
 	int		color_cap;
 	int		color_floor;
+	void		*mlx;
+	void		*win;
+	void		*north;
+	void		*south;
+	void		*east;
+	void		*west;
+	int			no;
+	int			so;
+	int			we;
+	int			ea;
+	int			fl;
+	int			ce;
+	int			rx;
+	int			ry;
+	double		x;
+	double		y;
+	double		dir_x;
+	double		dir_y;
+	double		plan_x;
+	double		plan_y;
+	double		p_angle;
+	char		*no_p;
+	char		*so_p;
+	char		*we_p;
+	char		*ea_p;
+	char		start_player;
+	t_img		img;
+	t_img		img_n;
+	t_img		img_so;
+	t_img		img_ea;
+	t_img		img_we;
+	t_moves		moves;
+	t_ray		ray;
+	t_text		texture;
 }				t_data;
 
-void	game(t_map *map);
 // check map
 int		check_map(t_data *data);
 char	**duplicate_map(char **map1);
@@ -102,32 +135,34 @@ void	free_tab_tab(char **tab);
 void	free_gnl(int fd);
 // errors
 void		error_map(char *str, t_data *data);
-void		ft_error_texture(char *str, t_data *data, t_map *map, int i);
 void		error_color(char *str, t_data *data, int fd);
+void	ft_error_texture(char *str, t_data *data);
 // init texture and color and data
 void	init_color(t_data *data, int fd);
 int		init_data(char **str, t_data *data);
-void    init_texture(t_data *data, t_map *map);
+void    init_texture(t_data *data);
 // raycasting
-void	raycasting(t_map *map);
-float	get_h_inter(t_map *map, float angl);
-float	get_v_inter(t_map *map, float angl);
-int 	inter_check(float angle, float *inter, float *step, int is_horizon);
-int 	unit_circle(float angle, char c);
-int 	wall_hit(float x, float y, t_map *map);
+void	init_ray(t_data *data);
+void	raycasting1(t_data *data);
+void	raycasting2(t_data *data);
+void	raycasting3(t_data *data);
+void	raycasting4(t_data *data);
+void	raycasting5(t_data *data);
+void	raycasting_hit(t_data *data);
 // render
-float	nor_angle(float angle);
-void	render_wall(t_map *map, int ray);
+void	texture_choice(t_data *data);
+void	texture_choice2(t_data *data);
+void	img_init(t_data *data);
 // movements
-void	move_up(t_map *map);
-void	move_down(t_map *map);
-void	move_left(t_map *map);
-void	move_right(t_map *map);
+void	ft_rotate1(t_data *data);
+void	ft_moves_ad(t_data *data);
+void	ft_moves_ws(t_data *data);
 // blocking
-int	is_blocking_down(t_map *map, int new_x, int new_y);
-int	is_blocking_up(t_map *map, int new_x, int new_y);
-int	is_blocking_right(t_map *map, int new_x, int new_y);
-int	is_blocking_left(t_map *map, int new_x, int new_y);
 // main
+// mlx
+void	game(t_data *data);
+int	ft_end(t_data *data);
+int	handle_input_release(int keysym, t_data *data);
+int	handle_input(int keysym, t_data *data);
 char	**duplicate_map2(char **map1);
 #endif

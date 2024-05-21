@@ -1,84 +1,102 @@
 #include "../include/cub3d.h"
-#include <math.h>
 
-int unit_circle(float angle, char c) // check the unit circle
+void	img_pix_put(t_img *img, int x, int y, int color)
 {
-	if (c == 'x')
-	{
-		if (angle > 0 && angle < M_PI)
-		return (1);
-	}
-	else if (c == 'y')
-	{
-		if (angle > (M_PI / 2) && angle < (3 * M_PI) / 2)
-		return (1);
-	}
-	return (0);
-}
+	char	*pixel;
+	int		i;
 
-int inter_check(float angle, float *inter, float *step, int is_horizon) // check the intersection
-{
-	if (is_horizon)
+	i = img->bpp - 8;
+	pixel = img->addr + (y * img->line_len + x * (img->bpp / 8));
+	while (i >= 0)
 	{
-		if (angle > 0 && angle < M_PI)
-		{
-			*inter += CUBE_SIZE;
-			return (-1);
-		}
-		*step *= -1;
-		}
-	else
-	{
-		if (!(angle > M_PI / 2 && angle < 3 * M_PI / 2))
-		{
-			*inter += CUBE_SIZE;
-			return (-1);
-		}
-		*step *= -1;
-	}
-	return (1);
-}
-
-int wall_hit(float x, float y, t_map *map) // check the wall hit
-{
-	int x_m;
-	int y_m;
-
-	if (x < 0 || y < 0)
-		return (0);
-	x_m = floor (x / CUBE_SIZE); // get the x position in the map
-	y_m = floor (y / CUBE_SIZE); // get the y position in the map
-	if ((y_m >= map->map_height || x_m >= map->map_width))
-	return (0);
-	if (map->map[y_m] && x_m <= (int)strlen(map -> map[y_m]))
-		if (map -> map[y_m][x_m] == '1')
-			return (0);
-	return (1);
-}
-
-void raycasting(t_map *map) // cast the rays
-{
-	double h_inter;
-	double v_inter;
-	int  ray;
-
-	ray = 0;
-	map->ray->ray_ngl = map->player->dir - (map->player->fov_rd / 2); // the start angle
-	while (ray < WIDTH) // loop for the rays
-	{
-		map->ray->flag = 0; // flag for the wall
-		h_inter = get_h_inter(map, nor_angle(map->ray->ray_ngl)); // get the horizontal intersection
-		v_inter = get_v_inter(map, nor_angle(map->ray->ray_ngl)); // get the vertical intersection
-		if (v_inter <= h_inter) // check the distance
-			map->ray->distance = v_inter; // get the distance
+		if (img->endian != 0)
+			*pixel++ = (color >> i) & 0xFF;
 		else
-		{
-			map->ray->distance = h_inter; // get the distance
-			map->ray->flag = 1; // flag for the wall
-		}
-		render_wall(map, ray); // render the wall
-		ray++; // next ray
-		map->ray->ray_ngl += (map->player->fov_rd / WIDTH); // next angle
+			*pixel++ = (color >> (img->bpp - 8 - i)) & 0xFF;
+		i -= 8;
 	}
-	mlx_put_image_to_window(map -> mlx, map -> mlx_win, map -> mlx_img, WIDTH, HEIGHT);
+}
+
+void	background(t_data *data)
+{
+	int		i;
+	int		j;
+
+	i = 0;
+	while (i < (HEIGHT / 2))
+	{
+		j = 0;
+		while (j < WIDTH)
+			img_pix_put(&data->img, j++, i, data -> color_cap);
+		++i;
+	}
+	while (i < HEIGHT)
+	{
+		j = 0;
+		while (j < WIDTH)
+			img_pix_put(&data->img, j++, i, data -> color_floor);
+		++i;
+	}
+}
+
+void	raycasting(t_data *data)
+{
+	data->ray.var_x = 0;
+	while (data->ray.var_x < WIDTH)
+	{
+		raycasting1(data);
+		raycasting2(data);
+		raycasting3(data);
+		raycasting4(data);
+		raycasting5(data);
+		data->texture.tex_pos = (data->ray.draw_start - HEIGHT / 2
+				+ data->ray.line_height / 2) * data->texture.step;
+		while (data->ray.draw_start < data->ray.draw_end)
+		{
+			texture_choice(data);
+			img_pix_put(&data->img, data->ray.var_x,
+				data->ray.draw_start++, data->texture.color);
+		}
+		data->ray.var_x++;
+	}
+}
+
+int	view(t_data *data)
+{
+	if (!data->win)
+		return (1);
+	background(data);
+	raycasting(data);
+	mlx_put_image_to_window(data->mlx, data->win, data->img.mlx_img, 0, 0);
+	ft_moves_ws(data);
+	ft_moves_ad(data);
+	ft_rotate1(data);
+	return (0);
+}
+
+void	game(t_data *data)
+{
+	data->mlx = mlx_init();
+	init_ray(data);
+	if (!data->mlx)
+		return ;
+	data->win = mlx_new_window(data->mlx, WIDTH, HEIGHT, "cub3d");
+	if (!data->win)
+		return ;
+	data->img.mlx_img = mlx_new_image(data->mlx, WIDTH, HEIGHT);
+	data->img.addr = mlx_get_data_addr(data->img.mlx_img, &data->img.bpp,
+			&data->img.line_len, &data->img.endian);
+	img_init(data);
+	mlx_loop_hook(data->mlx, &view, data);
+	mlx_hook(data->win, DestroyNotify, ButtonPressMask, &ft_end, data);
+	mlx_hook(data->win, KeyPress, KeyPressMask, &handle_input, data);
+	mlx_hook(data->win, KeyRelease, KeyReleaseMask, &handle_input_release, data);
+	mlx_loop(data->mlx);
+	mlx_destroy_image(data->mlx, data->img.mlx_img);
+	mlx_destroy_image(data->mlx, data->img_ea.mlx_img);
+	mlx_destroy_image(data->mlx, data->img_n.mlx_img);
+	mlx_destroy_image(data->mlx, data->img_so.mlx_img);
+	mlx_destroy_image(data->mlx, data->img_we.mlx_img);
+	mlx_destroy_display(data->mlx);
+	free(data->mlx);
 }

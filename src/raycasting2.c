@@ -1,47 +1,86 @@
 #include "../include/cub3d.h"
 
-float get_h_inter(t_map *map, float angl) // get the horizontal intersection
+void	img_init(t_data *data)
 {
-	float h_x;
-	float h_y;
-	float x_step;
-	float y_step;
-	int  pixel;
-
-	y_step = CUBE_SIZE;
-	x_step = CUBE_SIZE / tan(angl);
-	h_y = floor(map->player->plyr_y / CUBE_SIZE) * CUBE_SIZE;
-	pixel = inter_check(angl, &h_y, &y_step, 1);
-	h_x = map->player->plyr_x + (h_y - map->player->plyr_y) / tan(angl);
-	if ((unit_circle(angl, 'y') && x_step > 0) || (!unit_circle(angl, 'y') && x_step < 0)) // check x_step value
-		x_step *= -1;
-	while (wall_hit(h_x, h_y - pixel, map)) // check the wall hit whit the pixel value
-	{
-		h_x += x_step;
-		h_y += y_step;
-	}
-	return (sqrt(pow(h_x - map->player->plyr_x, 2) + pow(h_y - map->player->plyr_y, 2))); // get the distance
+	data->img_n.mlx_img = mlx_xpm_file_to_image(data->mlx,
+			data->no_p, &data->img_n.width, &data->img_n.height);
+	data->img_n.addr = mlx_get_data_addr(data->img_n.mlx_img,
+			&data->img_n.bpp, &data->img_n.line_len, &data->img_n.endian);
+	data->img_so.mlx_img = mlx_xpm_file_to_image(data->mlx,
+			data->so_p, &data->img_so.width, &data->img_so.height);
+	data->img_so.addr = mlx_get_data_addr(data->img_so.mlx_img,
+			&data->img_so.bpp, &data->img_so.line_len, &data->img_so.endian);
+	data->img_ea.mlx_img = mlx_xpm_file_to_image(data->mlx,
+			data->ea_p, &data->img_ea.width, &data->img_ea.height);
+	data->img_ea.addr = mlx_get_data_addr(data->img_ea.mlx_img,
+			&data->img_ea.bpp, &data->img_ea.line_len, &data->img_ea.endian);
+	data->img_we.mlx_img = mlx_xpm_file_to_image(data->mlx,
+			data->we_p, &data->img_we.width, &data->img_we.height);
+	data->img_we.addr = mlx_get_data_addr(data->img_we.mlx_img,
+			&data->img_we.bpp, &data->img_we.line_len, &data->img_we.endian);
 }
 
-float get_v_inter(t_map *map, float angl) // get the vertical intersection
+void	texture_choice(t_data *data)
 {
-	float v_x;
-	float v_y;
-	float x_step;
-	float y_step;
-	int  pixel;
-
-	x_step = CUBE_SIZE;
-	y_step = CUBE_SIZE * tan(angl);
-	v_x = floor(map->player->plyr_x / CUBE_SIZE) * CUBE_SIZE;
-	pixel = inter_check(angl, &v_x, &x_step, 0); // check the intersection and get the pixel value
-	v_y = map->player->plyr_y + (v_x - map->player->plyr_x) * tan(angl);
-	if ((unit_circle(angl, 'x') && y_step < 0) || (!unit_circle(angl, 'x') && y_step > 0)) // check y_step value
-		y_step *= -1;
-	while (wall_hit(v_x - pixel, v_y, map)) // check the wall hit whit the pixel value
+	if (data->texture.n_text == 0)
 	{
-		v_x += x_step;
-		v_y += y_step;
+		data->texture.tex_y = (int)data->texture.tex_pos
+			& (data->img_n.height - 1);
+		data->texture.tex_pos += data->texture.step;
+		data->texture.color = ((int *)data->img_n.addr)[data->texture.tex_x
+			+ (data->texture.tex_y * data->img_n.line_len / sizeof(int))];
 	}
-	return (sqrt(pow(v_x - map->player->plyr_x, 2) + pow(v_y - map->player->plyr_y, 2))); // get the distance
+	if (data->texture.n_text == 1)
+	{
+		data->texture.tex_y = (int)data->texture.tex_pos
+			& (data->img_so.height - 1);
+		data->texture.tex_pos += data->texture.step;
+		data->texture.color = ((int *)data->img_so.addr)[data->texture.tex_x
+			+ (data->texture.tex_y * data->img_so.line_len / sizeof(int))];
+	}
+	texture_choice2(data);
+}
+
+void	texture_choice2(t_data *data)
+{
+	if (data->texture.n_text == 2)
+	{
+		data->texture.tex_y = (int)data->texture.tex_pos
+			& (data->img_ea.height - 1);
+		data->texture.tex_pos += data->texture.step;
+		data->texture.color = ((int *)data->img_ea.addr)[data->texture.tex_x
+			+ (data->texture.tex_y * data->img_ea.line_len / sizeof(int))];
+	}
+	if (data->texture.n_text == 3)
+	{
+		data->texture.tex_y = (int)data->texture.tex_pos
+			& (data->img_we.height - 1);
+		data->texture.tex_pos += data->texture.step;
+		data->texture.color = ((int *)data->img_we.addr)[data->texture.tex_x
+			+ (data->texture.tex_y * data->img_we.line_len / sizeof(int))];
+	}
+}
+
+void	raycasting1(t_data *data)
+{
+	data->ray.camerax = 2 * data->ray.var_x / (double)WIDTH - 1;
+	data->ray.ray_dirx = data->dir_x + data->plan_x * data->ray.camerax;
+	data->ray.ray_diry = data->dir_y + data->plan_y * data->ray.camerax;
+	data->ray.mapx = (int)data->x;
+	data->ray.mapy = (int)data->y;
+	data->ray.delta_distx = fabs(1 / data->ray.ray_dirx);
+	data->ray.delta_disty = fabs(1 / data->ray.ray_diry);
+	data->ray.hit = 0;
+	if (data->ray.ray_dirx < 0)
+	{
+		data->ray.stepx = -1;
+		data->ray.side_distx = (data->x - data->ray.mapx)
+			* data->ray.delta_distx;
+	}
+	else
+	{
+		data->ray.stepx = 1;
+		data->ray.side_distx = (data->ray.mapx + 1.0 - data->x)
+			* data->ray.delta_distx;
+	}
 }

@@ -1,38 +1,37 @@
 #include "../include/cub3d.h"
 
-void	get_dir(t_map *map)
+int	ft_end(t_data *data)
 {
-	int	i;
-	int	j;
-
-	i = map -> player -> map_pos.y;
-	j = map -> player -> map_pos.x;
-	if (map -> map[i][j] == 'N')
-		map -> player -> dir = PI_3_2;
-	if (map -> map[i][j] == 'S')
-		map -> player -> dir = M_PI_2;
-	if (map -> map[i][j] == 'W')
-		map -> player -> dir = M_PI;
-	if (map -> map[i][j] == 'E')
-		map -> player -> dir = 0;
+	if (data->win)
+		mlx_destroy_window(data->mlx, data->win);
+	mlx_destroy_image(data->mlx, data->img.mlx_img);
+	mlx_destroy_image(data->mlx, data->img_ea.mlx_img);
+	mlx_destroy_image(data->mlx, data->img_n.mlx_img);
+	mlx_destroy_image(data->mlx, data->img_so.mlx_img);
+	mlx_destroy_image(data->mlx, data->img_we.mlx_img);
+	mlx_destroy_display(data->mlx);
+	free(data->mlx);
+	exit(0);
 }
 
-void	get_pos_player(t_map *map)
+void	get_pos_player(t_data *data)
 {
 	int	i;
 	int	j;
 
 	i = 0;
 	j = 0;
-	while (map -> map[i])
+	while (data -> map[i])
 	{
 		j = 0;
-		while (map -> map[i][j])
+		while (data -> map[i][j])
 		{
-			if (ft_isalpha(map -> map[i][j]) == 1)
+			if (ft_isalpha(data -> map[i][j]) == 1)
 			{
-				map -> player -> map_pos.x = j;
-				map -> player -> map_pos.y = i;
+				data -> x = j + 0.5;
+				data -> y = i + 0.5;
+				data -> start_player = data -> map[i][j];
+				data -> map[i][j] = '0';
 			}
 			j++;
 		}
@@ -40,46 +39,15 @@ void	get_pos_player(t_map *map)
 	}
 }
 
-void	get_width_height(t_map *map)
+void	init_data2(t_data *data)
 {
-	int	i;
-	int	j;
-	int	k;
-
-	i = 0;
-	k = 0;
-	while (map -> map[i])
-		i++;
-	map -> map_height = i;
-	i = 0;
-	while (map -> map[i])
-	{
-		j = 0;
-		while (map -> map[i][j])
-			j++;
-		if (k < j)
-			k = j;
-		i++;
-	}
-	map -> map_width = k;
-}
-
-void	init_map(t_map *map, t_data *data)
-{
-
-	map -> map = duplicate_map2(data -> map);
-	free_tab_tab(data -> map);
-	map -> floor_color = data -> color_floor;
-	map -> ceiling_color = data -> color_cap;
-	get_width_height(map);
-	get_pos_player(map);
-	get_dir(map);
+	get_pos_player(data);
+	init_texture(data);
 }
 
 int main(int argc, char **argv)
 {
 	t_data	*data;
-	t_map	map;
 
 	data = malloc(sizeof(t_data));
 	if (argc != 2)
@@ -88,11 +56,8 @@ int main(int argc, char **argv)
 	{
 		if (init_data(argv, data) == 1)
 		{
-			init_map(&map, data);
-			map.mlx = mlx_init();
-			map.mlx_win = mlx_new_window(map.mlx, WIDTH, HEIGHT, "cub3D");
-			init_texture(data, &map);
-			game(&map);
+			init_data2(data);
+			game(data);
 		}
 		else
 		{

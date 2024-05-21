@@ -6,24 +6,19 @@ void	error_map(char *str, t_data *data)
 	free_data_map(data);
 	free_data_texture_color(data);
 }
-void	ft_error_texture(char *str, t_data *data, t_map *map, int i)
+void	ft_error_texture(char *str, t_data *data)
 {
 	ft_printf("%s\n", str);
 	free_data_texture_color(data);
-	data -> valid_texture_color = 0;
-	// while (i > 2)
-	// {
-	// 	if (i == 3)
-	// 		mlx_destroy_image(map -> mlx, map -> no_texture ->img);
-	// 	if (i == 4)
-	// 		mlx_destroy_image(map -> mlx, map -> so_texture ->img);
-	// 	if (i == 5)
-	// 		mlx_destroy_image(map -> mlx, map -> ea_texture ->img);
-	// 	i--;
-	// }
-	while (i > 2)
-		i--;
-	(void) map;
+	if (data -> no_p)
+		free (data -> no_p);
+	if (data -> so_p)
+		free (data -> so_p);
+	if (data -> we_p)
+		free (data -> we_p);
+	if (data -> ea_p)
+		free (data -> ea_p);
+	free_tab_tab(data -> map);
 }
 
 void	error_color(char *str, t_data *data, int fd)
