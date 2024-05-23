@@ -52,8 +52,11 @@ void	free_data(t_data *data)
 		free(data->ea_p);
 	if (data->so_p)
 		free(data->so_p);
+	if (data -> texture_color)
+		free_tab_tab(data -> texture_color);
 	free_tab_tab(data->map);
 	data->map = 0;
+	free(data);
 }
 void	free_error(t_data *data, char *s)
 {

@@ -58,6 +58,7 @@ int main(int argc, char **argv)
 		{
 			init_data2(data);
 			game(data);
+			free_data(data);
 		}
 		else
 		{

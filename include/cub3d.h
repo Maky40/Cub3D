@@ -133,6 +133,7 @@ void	free_data_map(t_data *data);
 void	free_data_texture_color(t_data *data);
 void	free_tab_tab(char **tab);
 void	free_gnl(int fd);
+void	free_data(t_data *data);
 // errors
 void		error_map(char *str, t_data *data);
 void		error_color(char *str, t_data *data, int fd);
