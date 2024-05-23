@@ -23,7 +23,6 @@ void	get_pos_player(t_data *data)
 	j = 0;
 	while (data -> map[i])
 	{
-		ft_printf("%s\n", data -> map[i]);
 		j = 0;
 		while (data -> map[i][j])
 		{
@@ -58,6 +57,11 @@ int main(int argc, char **argv)
 		if (init_data(argv, data) == 1)
 		{
 			init_data2(data);
+			if (data -> valid_texture_color == 0)
+			{
+				free(data);
+				return (1);
+			}
 			game(data);
 			free_data(data);
 		}

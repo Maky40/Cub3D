@@ -134,10 +134,11 @@ void	free_data_texture_color(t_data *data);
 void	free_tab_tab(char **tab);
 void	free_gnl(int fd);
 void	free_data(t_data *data);
+void	free_data2(t_data *data);
 // errors
 void		error_map(char *str, t_data *data);
 void		error_color(char *str, t_data *data, int fd);
-void	ft_error_texture(char *str, t_data *data);
+void		ft_error_texture(char *str, t_data *data);
 // init texture and color and data
 void	init_color(t_data *data, int fd);
 int		init_data(char **str, t_data *data);

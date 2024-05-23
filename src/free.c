@@ -79,7 +79,5 @@ int	ft_finish(t_data *data)
 	mlx_destroy_image(data->mlx, data->img_we.mlx_img);
 	mlx_destroy_display(data->mlx);
 	free(data->mlx);
-	// if (data->file)
-	// 	free_error(data, "Fin du jeu\n");
 	exit(0);
 }
