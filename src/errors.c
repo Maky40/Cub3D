@@ -5,6 +5,7 @@ void	error_map(char *str, t_data *data)
 	ft_printf("%s\n", str);
 	free_data_map(data);
 	free_data_texture_color(data);
+	data -> valid_map = 0;
 }
 void	ft_error_texture(char *str, t_data *data)
 {

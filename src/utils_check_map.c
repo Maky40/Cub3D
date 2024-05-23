@@ -51,6 +51,8 @@ int	check_char(char c, t_data *data)
 	i = 0;
 	while (CARAC_MAP[i])
 	{
+		if (c == ' ' || (c >= 7 && c <= 13))
+			return (0);
 		if (CARAC_MAP[i] == c)
 		{
 			if (ft_isalpha(c) == 1)

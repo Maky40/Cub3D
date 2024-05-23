@@ -23,6 +23,7 @@ void	get_pos_player(t_data *data)
 	j = 0;
 	while (data -> map[i])
 	{
+		ft_printf("%s\n", data -> map[i]);
 		j = 0;
 		while (data -> map[i][j])
 		{
