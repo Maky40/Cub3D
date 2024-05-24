@@ -1,13 +1,25 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init_color.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: xav <xav@student.42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/24 10:49:54 by xav               #+#    #+#             */
+/*   Updated: 2024/05/24 10:58:08 by xav              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/cub3d.h"
 
-int		check_colors(int r, int g, int b)
+int	check_colors(int r, int g, int b)
 {
 	if ((r < 0 || 255 < r) || (g < 0 || 255 < g) || (b < 0 || 255 < b))
 		return (0);
 	return (1);
 }
 
-int		set_color2(char **rgb)
+int	set_color2(char **rgb)
 {
 	int	r;
 	int	g;
@@ -32,7 +44,7 @@ int		set_color2(char **rgb)
 	return (color);
 }
 
-int		set_color(char **tab, char c)
+int	set_color(char **tab, char c)
 {
 	int		i;
 	int		j;

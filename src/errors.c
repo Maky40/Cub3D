@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   errors.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: xav <xav@student.42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/24 10:50:18 by xav               #+#    #+#             */
+/*   Updated: 2024/05/24 10:57:04 by xav              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/cub3d.h"
 
 void	error_map(char *str, t_data *data)
@@ -7,6 +19,7 @@ void	error_map(char *str, t_data *data)
 	free_data_texture_color(data);
 	data -> valid_map = 0;
 }
+
 void	ft_error_texture(char *str, t_data *data)
 {
 	ft_printf("%s\n", str);

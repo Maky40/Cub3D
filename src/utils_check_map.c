@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils_check_map.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: xav <xav@student.42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/24 10:49:25 by xav               #+#    #+#             */
+/*   Updated: 2024/05/24 10:59:35 by xav              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/cub3d.h"
 
 char	**duplicate_map(char **map1)
@@ -43,7 +55,7 @@ char	**duplicate_map2(char **map1)
 	map2[i] = NULL;
 	return (map2);
 }
-// verify if char c is a correct character and if there is only one char
+
 int	check_char(char c, t_data *data)
 {
 	int	i;

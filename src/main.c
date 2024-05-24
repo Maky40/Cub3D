@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: xav <xav@student.42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/24 10:49:41 by xav               #+#    #+#             */
+/*   Updated: 2024/05/24 10:51:00 by xav              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/cub3d.h"
 
 int	ft_end(t_data *data)
@@ -45,7 +57,7 @@ void	init_data2(t_data *data)
 	init_texture(data);
 }
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
 	t_data	*data;
 

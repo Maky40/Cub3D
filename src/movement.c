@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   movement.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: xav <xav@student.42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/24 10:49:35 by xav               #+#    #+#             */
+/*   Updated: 2024/05/24 10:51:23 by xav              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/cub3d.h"
 
 void	ft_moves_ws(t_data *data)
@@ -63,6 +75,7 @@ void	ft_rotate2(t_data *data)
 			+ data->plan_y * cos(data->moves.rotate_speed);
 	}
 }
+
 void	ft_rotate1(t_data *data)
 {
 	double	old_planx;

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   free.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: xav <xav@student.42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/24 10:50:09 by xav               #+#    #+#             */
+/*   Updated: 2024/05/24 11:03:08 by xav              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/cub3d.h"
 
 void	free_tab_tab(char **tab)
@@ -15,22 +27,6 @@ void	free_tab_tab(char **tab)
 	return ;
 }
 
-void	free_data_map(t_data *data)
-{
-	free_tab_tab(data -> map);
-	// free(data -> map);
-	data -> map = NULL;
-	return ;
-}
-
-void	free_data_texture_color(t_data *data)
-{
-	free_tab_tab(data -> texture_color);
-	// free(data -> texture_color);
-	data -> texture_color = NULL;
-	return ;
-}
-
 void	free_gnl(int fd)
 {
 	char	*line;
@@ -42,6 +38,7 @@ void	free_gnl(int fd)
 		line = get_next_line(fd);
 	}
 }
+
 void	free_data(t_data *data)
 {
 	if (data->no_p)
@@ -58,6 +55,7 @@ void	free_data(t_data *data)
 	data->map = 0;
 	free(data);
 }
+
 void	free_error(t_data *data, char *s)
 {
 	free_data(data);

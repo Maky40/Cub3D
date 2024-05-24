@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_data.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: xav <xav@student.42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/24 10:50:01 by xav               #+#    #+#             */
+/*   Updated: 2024/05/24 11:49:14 by xav              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/cub3d.h"
 
 char	**get_map(char **tab_line, int fd, t_data *data)
@@ -67,16 +79,17 @@ char	**get_texture_color(int fd)
 	|| (line[i] == 'N' && line[i + 1] == 'O') || (line[i] == 'S' && line[i + 1] == 'O') \
 	|| (line[i] == 'W' && line[i + 1] == 'E') || (line[i] == 'E' && line[i + 1] == 'A') \
 	|| line[i] == '\n'))
-	 {
+	{
 		all_line = ft_strjoin(all_line, line + i);
 		free(line);
 		i = 0;
 		line = get_next_line(fd);
 		while (line[i] == ' ')
 			i++;
-	 }
-	 return (return_tab_line(all_line, line));
+	}
+	return (return_tab_line(all_line, line));
 }
+
 void	parse_data(t_data *data, int fd)
 {
 	int		i;
@@ -102,7 +115,7 @@ void	parse_data(t_data *data, int fd)
 		return ;
 	}
 	data -> map = get_map(tab_line, fd, data);
-	if (data -> valid_map == 0 || check_map(data) == 0)
+	if (check_map(data) == 0 || data -> valid_map == 0)
 		error_map("Error\nMap not closed or invalid char", data);
 }
 

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   raycasting3.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: xav <xav@student.42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/24 10:49:19 by xav               #+#    #+#             */
+/*   Updated: 2024/05/24 10:53:04 by xav              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/cub3d.h"
 
 void	raycasting2(t_data *data)
@@ -36,7 +48,6 @@ void	raycasting_hit(t_data *data)
 		if (data->map[data->ray.mapy][data->ray.mapx] == '1')
 			data->ray.hit = 1;
 	}
-
 }
 
 void	raycasting3(t_data *data)

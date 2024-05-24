@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   raycasting1.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: xav <xav@student.42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/24 10:49:01 by xav               #+#    #+#             */
+/*   Updated: 2024/05/24 10:52:23 by xav              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/cub3d.h"
 
 void	img_pix_put(t_img *img, int x, int y, int color)
@@ -67,7 +79,8 @@ int	view(t_data *data)
 		return (1);
 	background(data);
 	raycasting(data);
-	mlx_put_image_to_window(data->mlx, data->win, data->img.mlx_img, 0, 0);
+	mlx_put_image_to_window(data->mlx, data->win,
+		data->img.mlx_img, 0, 0);
 	ft_moves_ws(data);
 	ft_moves_ad(data);
 	ft_rotate1(data);
@@ -90,7 +103,8 @@ void	game(t_data *data)
 	mlx_loop_hook(data->mlx, &view, data);
 	mlx_hook(data->win, DestroyNotify, ButtonPressMask, &ft_end, data);
 	mlx_hook(data->win, KeyPress, KeyPressMask, &handle_input, data);
-	mlx_hook(data->win, KeyRelease, KeyReleaseMask, &handle_input_release, data);
+	mlx_hook(data->win, KeyRelease, KeyReleaseMask,
+		&handle_input_release, data);
 	mlx_loop(data->mlx);
 	mlx_destroy_image(data->mlx, data->img.mlx_img);
 	mlx_destroy_image(data->mlx, data->img_ea.mlx_img);

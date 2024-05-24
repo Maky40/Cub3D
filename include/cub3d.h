@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cub3d.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: xav <xav@student.42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/24 11:49:59 by xav               #+#    #+#             */
+/*   Updated: 2024/05/24 11:53:38 by xav              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
@@ -88,40 +99,40 @@ typedef struct s_data
 	char	**texture_color;
 	int		color_cap;
 	int		color_floor;
-	void		*mlx;
-	void		*win;
-	void		*north;
-	void		*south;
-	void		*east;
-	void		*west;
-	int			no;
-	int			so;
-	int			we;
-	int			ea;
-	int			fl;
-	int			ce;
-	int			rx;
-	int			ry;
-	double		x;
-	double		y;
-	double		dir_x;
-	double		dir_y;
-	double		plan_x;
-	double		plan_y;
-	double		p_angle;
-	char		*no_p;
-	char		*so_p;
-	char		*we_p;
-	char		*ea_p;
-	char		start_player;
-	t_img		img;
-	t_img		img_n;
-	t_img		img_so;
-	t_img		img_ea;
-	t_img		img_we;
-	t_moves		moves;
-	t_ray		ray;
-	t_text		texture;
+	void	*mlx;
+	void	*win;
+	void	*north;
+	void	*south;
+	void	*east;
+	void	*west;
+	int		no;
+	int		so;
+	int		we;
+	int		ea;
+	int		fl;
+	int		ce;
+	int		rx;
+	int		ry;
+	double	x;
+	double	y;
+	double	dir_x;
+	double	dir_y;
+	double	plan_x;
+	double	plan_y;
+	double	p_angle;
+	char	*no_p;
+	char	*so_p;
+	char	*we_p;
+	char	*ea_p;
+	char	start_player;
+	t_img	img;
+	t_img	img_n;
+	t_img	img_so;
+	t_img	img_ea;
+	t_img	img_we;
+	t_moves	moves;
+	t_ray	ray;
+	t_text	texture;
 }				t_data;
 
 // check map
@@ -136,13 +147,16 @@ void	free_gnl(int fd);
 void	free_data(t_data *data);
 void	free_data2(t_data *data);
 // errors
-void		error_map(char *str, t_data *data);
-void		error_color(char *str, t_data *data, int fd);
-void		ft_error_texture(char *str, t_data *data);
+void	error_map(char *str, t_data *data);
+void	error_color(char *str, t_data *data, int fd);
+void	ft_error_texture(char *str, t_data *data);
 // init texture and color and data
 void	init_color(t_data *data, int fd);
 int		init_data(char **str, t_data *data);
-void    init_texture(t_data *data);
+void	init_texture(t_data *data);
+int		text_check(t_data *data);
+int		way_texture(char *tab);
+int		check_name_texture(t_data *data);
 // raycasting
 void	init_ray(t_data *data);
 void	raycasting1(t_data *data);
@@ -163,8 +177,9 @@ void	ft_moves_ws(t_data *data);
 // main
 // mlx
 void	game(t_data *data);
-int	ft_end(t_data *data);
-int	handle_input_release(int keysym, t_data *data);
-int	handle_input(int keysym, t_data *data);
+int		ft_end(t_data *data);
+int		handle_input_release(int keysym, t_data *data);
+int		handle_input(int keysym, t_data *data);
 char	**duplicate_map2(char **map1);
+
 #endif
