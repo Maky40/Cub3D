@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xav <xav@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: mnie <mnie@student.42perpignan.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 11:49:59 by xav               #+#    #+#             */
-/*   Updated: 2024/05/24 11:53:38 by xav              ###   ########.fr       */
+/*   Updated: 2024/05/24 18:10:24 by mnie             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,7 @@ typedef struct s_data
 int		check_map(t_data *data);
 char	**duplicate_map(char **map1);
 int		check_char(char c, t_data *data);
+char	**get_map(char **tab_line, int fd, t_data *data);
 // free
 void	free_data_map(t_data *data);
 void	free_data_texture_color(t_data *data);

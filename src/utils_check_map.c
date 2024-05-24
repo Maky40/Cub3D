@@ -3,14 +3,42 @@
 /*                                                        :::      ::::::::   */
 /*   utils_check_map.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xav <xav@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: mnie <mnie@student.42perpignan.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 10:49:25 by xav               #+#    #+#             */
-/*   Updated: 2024/05/24 10:59:35 by xav              ###   ########.fr       */
+/*   Updated: 2024/05/24 18:10:08 by mnie             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3d.h"
+
+char	**get_map(char **tab_line, int fd, t_data *data)
+{
+	char	*line;
+	char	*all_line;
+	int		i;
+	char	**map;
+
+	all_line = ft_strdup(tab_line[1]);
+	line = get_next_line(fd);
+	while (line)
+	{
+		all_line = ft_strjoin(all_line, line);
+		free (line);
+		line = get_next_line(fd);
+	}
+	free_tab_tab(tab_line);
+	i = 0;
+	while (all_line[i])
+	{
+		if (all_line[i] == '\n' && all_line[i + 1] == '\n')
+			data -> valid_map = 0;
+		i++;
+	}
+	map = ft_split(all_line, '\n');
+	free(all_line);
+	return (map);
+}
 
 char	**duplicate_map(char **map1)
 {

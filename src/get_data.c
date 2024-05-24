@@ -3,42 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   get_data.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xav <xav@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: mnie <mnie@student.42perpignan.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 10:50:01 by xav               #+#    #+#             */
-/*   Updated: 2024/05/24 11:49:14 by xav              ###   ########.fr       */
+/*   Updated: 2024/05/24 18:09:46 by mnie             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3d.h"
-
-char	**get_map(char **tab_line, int fd, t_data *data)
-{
-	char	*line;
-	char	*all_line;
-	int		i;
-	char	**map;
-
-	all_line = ft_strdup(tab_line[1]);
-	line = get_next_line(fd);
-	while (line)
-	{
-		all_line = ft_strjoin(all_line, line);
-		free (line);
-		line = get_next_line(fd);
-	}
-	free_tab_tab(tab_line);
-	i = 0;
-	while (all_line[i])
-	{
-		if (all_line[i] == '\n' && all_line[i + 1] == '\n')
-			data -> valid_map = 0;
-		i++;
-	}
-	map = ft_split(all_line, '\n');
-	free(all_line);
-	return (map);
-}
 
 char	**return_tab_line(char *all_line, char *line)
 {
@@ -57,27 +29,18 @@ char	**return_tab_line(char *all_line, char *line)
 	return (tab_line);
 }
 
-char	**get_texture_color(int fd)
+char	**get_texture_color2(char *all_line, char *line, int fd)
 {
-	char	*line;
-	char	*all_line;
-	int		i;
+	int	i;
 
 	i = 0;
-	all_line = get_next_line(fd);
-	if (!all_line)
-		return (NULL);
-	line = get_next_line(fd);
-	if (!line)
-	{
-		free(all_line);
-		return (NULL);
-	}
 	while (line[i] == ' ')
 		i++;
 	while (line && (line[i] == 'F' || line[i] == 'C' \
-	|| (line[i] == 'N' && line[i + 1] == 'O') || (line[i] == 'S' && line[i + 1] == 'O') \
-	|| (line[i] == 'W' && line[i + 1] == 'E') || (line[i] == 'E' && line[i + 1] == 'A') \
+	|| (line[i] == 'N' && line[i + 1] == 'O') || \
+	(line[i] == 'S' && line[i + 1] == 'O') \
+	|| (line[i] == 'W' && line[i + 1] == 'E') \
+	|| (line[i] == 'E' && line[i + 1] == 'A') \
 	|| line[i] == '\n'))
 	{
 		all_line = ft_strjoin(all_line, line + i);
@@ -88,6 +51,34 @@ char	**get_texture_color(int fd)
 			i++;
 	}
 	return (return_tab_line(all_line, line));
+}
+
+char	**get_texture_color(int fd)
+{
+	char	*line;
+	char	*all_line;
+	int		i;
+
+	i = 0;
+	all_line = get_next_line(fd);
+	if (!all_line)
+		return (NULL);
+	while (all_line[i] == ' ')
+		i++;
+	if (all_line[i] && (all_line[i] == 'F' || all_line[i] == 'C' \
+	|| (all_line[i] == 'N' && all_line[i + 1] == 'O') || \
+	(all_line[i] == 'S' && all_line[i + 1] == 'O') \
+	|| (all_line[i] == 'W' && all_line[i + 1] == 'E') \
+	|| (all_line[i] == 'E' && all_line[i + 1] == 'A') \
+	|| all_line[i] == '\n'))
+	{
+		line = get_next_line(fd);
+		if (line)
+			return (get_texture_color2(all_line, line, fd));
+	}
+	free(all_line);
+	free_gnl(fd);
+	return (NULL);
 }
 
 void	parse_data(t_data *data, int fd)

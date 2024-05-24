@@ -3,14 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   conf_texture2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xav <xav@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: mnie <mnie@student.42perpignan.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 11:31:21 by xav               #+#    #+#             */
-/*   Updated: 2024/05/24 11:34:43 by xav              ###   ########.fr       */
+/*   Updated: 2024/05/24 18:09:14 by mnie             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3d.h"
+
+int	way_texture(char *tab)
+{
+	int		i;
+
+	i = 2;
+	while (tab[i] == ' ')
+		i++;
+	return (i);
+}
 
 int	ft_search(char *buffer, char *pixel)
 {
